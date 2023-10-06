@@ -25,7 +25,6 @@ const TicTacToe = () => {
   } else if (squares.some((s) => s === null)) {
     status = <p>Next player: {xIsNext ? "X" : "O"}</p>;
   } else {
-    console.log("squares: ", squares);
     status = <p className={classes.draw}>Draw</p>;
   }
   useEffect(() => {
