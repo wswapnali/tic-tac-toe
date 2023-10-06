@@ -1,0 +1,123 @@
+.game {
+  padding: 30px;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 40px auto;
+  border: 10px double;
+}
+
+.square {
+  width: 114px;
+  height: 114px;
+  font-size: 70px;
+  padding: 25px;
+  background: transparent;
+  border: none;
+}
+
+.rowRowMiddle {
+  border: 5px solid #48423c;
+  border-left: none;
+  border-right: none;
+}
+
+.square:nth-child(2) {
+  border: 5px solid #48423c;
+  border-top: none;
+  border-bottom: none;
+}
+
+.board {
+  overflow: auto;
+  height: 365px;
+  width: 365px;
+  margin: auto;
+  padding: 30px;
+  position: relative;
+}
+
+.status p {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.statusWinner {
+  color: green;
+}
+
+hr {
+  border: 3px solid red;
+  position: absolute;
+  width: 100%;
+  display: none;
+}
+
+.leftToRightDiagonalWinner {
+  top: 48%;
+  transform: rotate(47deg);
+  left: 0;
+  display: inline-block;
+}
+
+.rightToLeftDiagonalWinner {
+  top: 46%;
+  left: 0;
+  transform: rotate(135deg);
+  display: inline-block;
+}
+
+.firstRowWinner {
+  top: 19%;
+  left: 0;
+  display: inline-block;
+}
+
+.secondRowWinner {
+  top: 47%;
+  left: 0;
+  display: inline-block;
+}
+
+.thirdRowWinner {
+  top: 75%;
+  left: 0;
+  display: inline-block;
+}
+
+.firstColumnWinner {
+  top: 48%;
+  left: -27.5%;
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+.secondColumnWinner {
+  top: 48%;
+  left: -0.5%;
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+.thirdColumnWinner {
+  top: 48%;
+  left: 26%;
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+.resetBtn {
+  border: 3px solid #c50000;
+  background: transparent;
+  margin: 30px;
+  font-size: 20px;
+  padding: 10px 26px;
+  border-radius: 5px;
+  color: #c50000;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.resetBtn:hover {
+  background: #c50000;
+  color: white;
+}
