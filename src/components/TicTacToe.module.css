@@ -46,7 +46,7 @@
 }
 
 hr {
-  border: 3px solid red;
+  border: 3px solid rgb(255 0 0 / 70%);
   position: absolute;
   width: 100%;
   display: none;
