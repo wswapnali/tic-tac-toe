@@ -22,8 +22,11 @@ const TicTacToe = () => {
   let status;
   if (winner && winner.token) {
     status = <p className={classes.statusWinner}>Winner: {winner.token}</p>;
-  } else {
+  } else if (squares.some((s) => s === null)) {
     status = <p>Next player: {xIsNext ? "X" : "O"}</p>;
+  } else {
+    console.log("squares: ", squares);
+    status = <p className={classes.draw}>Draw</p>;
   }
   useEffect(() => {
     if (winner && winner.token) {

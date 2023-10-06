@@ -46,6 +46,25 @@ describe("TicTacToe Component", () => {
     expect(getByText("Winner: X")).toBeInTheDocument();
   });
 
+  it("displays draw when a players tie", () => {
+    // Mock the Redux store state to simulate a winning condition
+    const storeWithWinner = mockStore({
+      game: {
+        squares: ["X", "X", "O", "O", "O", "X", "X", "X", "O"],
+        xIsNext: true,
+      },
+    });
+
+    const { getByText } = render(
+      <Provider store={storeWithWinner}>
+        <TicTacToe />
+      </Provider>
+    );
+
+    // Verify that the component displays Draw
+    expect(getByText("Draw")).toBeInTheDocument();
+  });
+
   it("resets the game when Reset button is clicked", () => {
     const { getByText } = render(
       <Provider store={store}>
