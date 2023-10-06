@@ -62,9 +62,9 @@ npm run build
 
 ## Built With
 
-React - JavaScript library for building user interfaces.
-Redux - State management library for JavaScript applications.
-styled-components - CSS-in-JS library for styling React components.
+1. React - JavaScript library for building user interfaces.
+2. Redux - State management library for JavaScript applications.
+3. styled-components - CSS-in-JS library for styling React components.
 
 ## Contributing
 
