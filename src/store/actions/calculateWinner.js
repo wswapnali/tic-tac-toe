@@ -1,39 +1,4 @@
-import { combineReducers } from "redux";
-
-const initialState = {
-  squares: Array(9).fill(null),
-  xIsNext: true,
-};
-
-const gameReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "CLICK_SQUARE":
-      const squares = state.squares.slice();
-      if (calculateWinner(squares) || squares[action.payload]) {
-        return state;
-      }
-      squares[action.payload] = state.xIsNext ? "X" : "O";
-      return {
-        ...state,
-        squares: squares,
-        xIsNext: !state.xIsNext,
-      };
-    case "RESET_SQUARE":
-      return {
-        ...initialState,
-      };
-    default:
-      return state;
-  }
-};
-
-const rootReducer = combineReducers({
-  game: gameReducer,
-});
-
-export default rootReducer;
-
-export function calculateWinner(squares) {
+export const calculateWinner = (squares) => {
   const winningLines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -87,13 +52,4 @@ export function calculateWinner(squares) {
   }
 
   return null;
-}
-
-export const clickSquare = (index) => ({
-  type: "CLICK_SQUARE",
-  payload: index,
-});
-
-export const resetSquare = () => ({
-  type: "RESET_SQUARE",
-});
+};

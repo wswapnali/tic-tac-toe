@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
 import classes from "./TicTacToe.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { clickSquare, calculateWinner, resetSquare } from "../redux/reducers";
+import { clickSquare, resetSquare } from "../store/actions/game";
 const TicTacToe = () => {
   const squares = useSelector((state) => state.game.squares);
   const xIsNext = useSelector((state) => state.game.xIsNext);
-  const [lineClassName, setLineClassName] = useState("");
+  const winnerTocken = useSelector((state) => state.game.winner);
+  const connectingLine = useSelector((state) => state.game.connectingLine);
+
   const dispatch = useDispatch();
 
   const renderSquare = (i) => (
@@ -18,23 +19,16 @@ const TicTacToe = () => {
     </button>
   );
 
-  const winner = calculateWinner(squares);
   let status;
-  if (winner && winner.token) {
-    status = <p className={classes.statusWinner}>Winner: {winner.token}</p>;
+  if (winnerTocken) {
+    status = <p className={classes.statusWinner}>Winner: {winnerTocken}</p>;
   } else if (squares.some((s) => s === null)) {
     status = <p>Next player: {xIsNext ? "X" : "O"}</p>;
   } else {
     status = <p className={classes.draw}>Draw</p>;
   }
-  useEffect(() => {
-    if (winner && winner.token) {
-      setLineClassName(classes[winner.lineClass]);
-    }
-  }, [winner]);
 
   const resetHandler = () => {
-    setLineClassName(null);
     dispatch(resetSquare());
   };
 
@@ -58,7 +52,7 @@ const TicTacToe = () => {
             {renderSquare(7)}
             {renderSquare(8)}
           </div>
-          {lineClassName && <hr className={lineClassName} />}
+          {connectingLine && <hr className={classes[connectingLine]} />}
         </div>
         <button className={classes.resetBtn} onClick={resetHandler}>
           Reset
