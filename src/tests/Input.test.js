@@ -46,6 +46,6 @@ describe("Input Component", () => {
     fireEvent.change(inputField, { target: { value: "1" } });
     fireEvent.click(submitButton);
 
-    expect(getByText("Rows must be atleast 2")).toBeInTheDocument();
+    expect(getByText("Rows must be atleast 3")).toBeInTheDocument();
   });
 });

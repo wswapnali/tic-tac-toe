@@ -55,6 +55,10 @@ const gameReducer = (state = initialState, action) => {
     case RESET_SQUARE:
       return {
         ...initialState,
+        size: state.size,
+        board: Array(state.size)
+          .fill(null)
+          .map(() => Array(state.size).fill(null)),
       };
     case SET_SQUARE: {
       const size = parseFloat(action.payload);

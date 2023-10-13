@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classes from "./Input.module.css";
 import { setSquare } from "../../store/actions/game";
 const Input = () => {
@@ -7,7 +7,7 @@ const Input = () => {
   const dispatch = useDispatch();
   const userInput = useRef();
   const submitHandler = () => {
-    if (userInput.current.value <= 1) {
+    if (userInput.current.value <= 2) {
       setError(true);
     } else {
       setError(false);
@@ -30,7 +30,7 @@ const Input = () => {
       >
         Submit
       </button>
-      {error && <p className={classes.errorMessage}>Rows must be atleast 2</p>}
+      {error && <p className={classes.errorMessage}>Rows must be atleast 3</p>}
     </>
   );
 };
