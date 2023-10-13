@@ -4,12 +4,16 @@ import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
 import App from "./App";
 
-// Mock Redux store
 const mockStore = configureStore([]);
 const initialState = {
   game: {
-    squares: Array(9).fill(null),
+    board: Array(3)
+      .fill(null)
+      .map(() => Array(3).fill(null)),
     xIsNext: true,
+    winner: null,
+    size: 3,
+    winningCells: [],
   },
 };
 const store = mockStore(initialState);

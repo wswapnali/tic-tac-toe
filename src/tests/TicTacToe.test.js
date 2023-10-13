@@ -1,64 +1,93 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import TicTacToe from "../components/TicTacToe";
-import { resetSquare } from "../store/actions/game";
-
-// Mock Redux store
-const mockStore = configureStore([]);
-const initialState = {
-  game: {
-    squares: Array(9).fill(null),
-    xIsNext: true,
-    winner: null,
-    connectingLine: null,
-  },
-};
-const store = mockStore(initialState);
+import store from "../store/";
 
 describe("TicTacToe Component", () => {
-  it("renders without errors", () => {
+  it("renders the component without errors", () => {
     const { getByText } = render(
       <Provider store={store}>
         <TicTacToe />
       </Provider>
     );
 
-    // Verify that the component is rendered
     expect(getByText("Next player: X")).toBeInTheDocument();
   });
 
-  it("displays draw when a players tie", () => {
-    // Mock the Redux store state to simulate a winning condition
-    const storeWithWinner = mockStore({
-      game: {
-        squares: ["X", "X", "O", "O", "O", "X", "X", "X", "O"],
-        xIsNext: true,
-      },
-    });
-
-    const { getByText } = render(
-      <Provider store={storeWithWinner}>
+  it("handles a click event on a square", () => {
+    const { getByTestId } = render(
+      <Provider store={store}>
         <TicTacToe />
       </Provider>
     );
 
-    // Verify that the component displays Draw
+    const square = getByTestId("box00");
+    fireEvent.click(square);
+
+    expect(square.textContent).toBe("X");
+  });
+
+  it("handles a draw scenario", () => {
+    const { getByTestId, getByText } = render(
+      <Provider store={store}>
+        <TicTacToe />
+      </Provider>
+    );
+
+    const testIdsToClick = [
+      "box00",
+      "box01",
+      "box02",
+      "box11",
+      "box10",
+      "box12",
+      "box21",
+      "box20",
+      "box22",
+    ];
+
+    testIdsToClick.forEach((squareIndex) => {
+      const square = getByTestId(squareIndex);
+      fireEvent.click(square);
+    });
+
     expect(getByText("Draw")).toBeInTheDocument();
   });
 
-  it("resets the game when Reset button is clicked", () => {
+  it("handles a reset event", () => {
     const { getByText } = render(
       <Provider store={store}>
         <TicTacToe />
       </Provider>
     );
 
-    // Click on the Reset button
-    fireEvent.click(getByText("Reset"));
+    const resetButton = getByText("Reset");
+    fireEvent.click(resetButton);
 
-    // Verify that the resetSquare action is dispatched
-    expect(store.getActions()).toEqual([resetSquare()]);
+    expect(getByText("Next player: X")).toBeInTheDocument();
+  });
+
+  it("handles a winning scenario", () => {
+    const { getByTestId, getByText } = render(
+      <Provider store={store}>
+        <TicTacToe />
+      </Provider>
+    );
+
+    const squaresToWin = [
+      [null, null, null],
+      [null, null, null],
+      [null, null, null],
+    ];
+
+    squaresToWin.forEach((rows, rowIndex) => {
+      rows.forEach((cols, colIndex) => {
+        const square = getByTestId("box" + rowIndex + colIndex);
+        fireEvent.click(square);
+      });
+    });
+
+    expect(getByText("Winner: X")).toBeInTheDocument();
   });
 });

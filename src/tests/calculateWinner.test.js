@@ -1,78 +1,111 @@
 import { calculateWinner } from "../store/actions/calculateWinner";
 
 describe("calculateWinner", () => {
-  it("should return null for no winner", () => {
-    const squares = ["X", "O", "X", "O", "X", "O", "O", "X", "O"];
-    const result = calculateWinner(squares);
-    expect(result).toBeNull();
+  it("should return the winning result when there is a horizontal win", () => {
+    const matrixSize = 3;
+    const currentPlayer = "X";
+    const row = 0;
+    const col = 0;
+    const board = [
+      ["X", "X", "X"],
+      ["O", "O", null],
+      [null, null, null],
+    ];
+
+    const result = calculateWinner(board, matrixSize, currentPlayer, row, col);
+
+    expect(result).toEqual({
+      token: "X",
+      winningCells: [
+        { row: 0, col: 0 },
+        { row: 0, col: 1 },
+        { row: 0, col: 2 },
+      ],
+    });
   });
 
-  it("should correctly detect a first line horizontal winner", () => {
-    const squares = ["X", "X", "X", "O", "O", null, "O", null, "X"];
-    const result = calculateWinner(squares);
-    expect(result).toEqual({ token: "X", lineClass: "firstRowWinner" });
-  });
+  it("should return the winning result when there is a vertical win", () => {
+    const matrixSize = 3;
+    const currentPlayer = "O";
+    const row = 1;
+    const col = 0;
+    const board = [
+      ["O", "X", "X"],
+      ["O", null, "X"],
+      ["O", null, null],
+    ];
 
-  it("should correctly identify a second horizontal winner", () => {
-    const squares = ["X", "O", "X", "O", "O", "O", "X", "X", null];
-    expect(calculateWinner(squares)).toEqual({
+    const result = calculateWinner(board, matrixSize, currentPlayer, row, col);
+
+    expect(result).toEqual({
       token: "O",
-      lineClass: "secondRowWinner",
+      winningCells: [
+        { col: 0, row: 0 },
+        { col: 0, row: 1 },
+        { col: 0, row: 2 },
+      ],
     });
   });
 
-  it("should correctly identify a third horizontal winner", () => {
-    const squares = ["X", "O", null, "O", "O", null, "X", "X", "X"];
-    expect(calculateWinner(squares)).toEqual({
+  it("should return the winning result when there is a diagonal win (top-left to bottom-right)", () => {
+    const matrixSize = 3;
+    const currentPlayer = "X";
+    const row = 0;
+    const col = 0;
+    const board = [
+      ["X", "O", "X"],
+      [null, "X", "O"],
+      ["O", null, "X"],
+    ];
+
+    const result = calculateWinner(board, matrixSize, currentPlayer, row, col);
+
+    expect(result).toEqual({
       token: "X",
-      lineClass: "thirdRowWinner",
+      winningCells: [
+        { row: 0, col: 0 },
+        { row: 1, col: 1 },
+        { row: 2, col: 2 },
+      ],
     });
   });
 
-  it("should correctly identify first vertical winner", () => {
-    const squares = ["X", "O", null, "X", "O", null, "X", null, null];
-    expect(calculateWinner(squares)).toEqual({
-      token: "X",
-      lineClass: "firstColumnWinner",
-    });
-  });
+  it("should return the winning result when there is a diagonal win (top-right to bottom-left)", () => {
+    const matrixSize = 3;
+    const currentPlayer = "O";
+    const row = 2;
+    const col = 0;
+    const board = [
+      ["X", "O", "O"],
+      ["O", "O", "X"],
+      ["O", "X", "O"],
+    ];
 
-  it("should correctly identify second vertical winner", () => {
-    const squares = ["X", "O", "X", "X", "O", null, null, "O", null];
-    expect(calculateWinner(squares)).toEqual({
+    const result = calculateWinner(board, matrixSize, currentPlayer, row, col);
+
+    expect(result).toEqual({
       token: "O",
-      lineClass: "secondColumnWinner",
+      winningCells: [
+        { row: 0, col: 2 },
+        { row: 1, col: 1 },
+        { row: 2, col: 0 },
+      ],
     });
   });
 
-  it("should correctly identify third vertical winner", () => {
-    const squares = [null, "O", "X", null, "O", "X", null, null, "X"];
-    expect(calculateWinner(squares)).toEqual({
-      token: "X",
-      lineClass: "thirdColumnWinner",
-    });
-  });
+  it("should return null when there is no winner", () => {
+    const matrixSize = 3;
+    const currentPlayer = "X";
+    const row = 1;
+    const col = 1;
+    const board = [
+      ["X", "O", "X"],
+      ["O", "X", "O"],
+      ["O", "X", "O"],
+    ];
 
-  it("should correctly identify a diagonal winner", () => {
-    const squares = ["X", "O", "O", null, "X", null, "O", null, "X"];
-    expect(calculateWinner(squares)).toEqual({
-      token: "X",
-      lineClass: "leftToRightDiagonalWinner",
-    });
-  });
+    const result = calculateWinner(board, matrixSize, currentPlayer, row, col);
 
-  it("should correctly detect a diagonal winner", () => {
-    const squares = ["X", "O", "X", "O", "X", "O", "X", "X", "O"];
-
-    expect(calculateWinner(squares)).toEqual({
-      token: "X",
-      lineClass: "rightToLeftDiagonalWinner",
-    });
-  });
-
-  it("should handle a draw (no winner)", () => {
-    const squares = ["X", "O", "X", "X", "X", "O", "O", "X", "O"];
-    const result = calculateWinner(squares);
     expect(result).toBeNull();
   });
 });

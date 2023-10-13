@@ -1,59 +1,181 @@
 import gameReducer from "../store/reducers/game";
-import { CLICK_SQUARE, RESET_SQUARE } from "../store/actions/game";
+import { CLICK_SQUARE, RESET_SQUARE, SET_SQUARE } from "../store/actions/game";
 
-describe("gameReducer", () => {
+describe("Reducer gameReducer", () => {
   it("should return the initial state", () => {
-    expect(gameReducer(undefined, {})).toEqual({
-      squares: Array(9).fill(null),
+    const initialState = {
+      board: Array(3)
+        .fill(null)
+        .map(() => Array(3).fill(null)),
       xIsNext: true,
       winner: null,
-      connectingLine: null,
-    });
+      size: 3,
+      winningCells: [],
+    };
+    expect(gameReducer(undefined, {})).toEqual(initialState);
   });
 
   it("should handle CLICK_SQUARE action", () => {
     const initialState = {
-      squares: Array(9).fill(null),
+      board: Array(3)
+        .fill(null)
+        .map(() => Array(3).fill(null)),
       xIsNext: true,
       winner: null,
-      connectingLine: null,
+      size: 3,
+      winningCells: [],
     };
 
-    // Create an action to simulate clicking a square
     const action = {
       type: CLICK_SQUARE,
-      payload: 0, // Change this value to simulate clicking a different square
+      payload: {
+        rowIndex: 0,
+        colIndex: 0,
+      },
     };
 
-    // Simulate the first click on the square
     const newState = gameReducer(initialState, action);
-
-    expect(newState.squares[0]).toBe("X"); // Make sure the square is 'X' after the click
-    expect(newState.xIsNext).toBe(false); // Ensure the turn has switched to 'O'
+    const expectdState = {
+      board: [
+        ["X", null, null],
+        [null, null, null],
+        [null, null, null],
+      ],
+      size: 3,
+      winner: null,
+      winningCells: [],
+      xIsNext: false,
+    };
+    expect(newState).toEqual(expectdState);
   });
 
   it("should handle RESET_SQUARE action", () => {
     const initialState = {
-      squares: ["X", "O", "X", "O", "X", "O", "X", null, null],
-      xIsNext: false,
-      winner: "X",
-      connectingLine: "rightToLeftDiagonalWinner",
+      board: Array(3)
+        .fill(null)
+        .map(() => Array(3).fill(null)),
+      xIsNext: true,
+      winner: null,
+      size: 3,
+      winningCells: [],
     };
 
-    // Create an action to simulate resetting the game
     const action = {
       type: RESET_SQUARE,
     };
 
-    // Simulate the game reset
     const newState = gameReducer(initialState, action);
+    const expectdState = {
+      board: [
+        [null, null, null],
+        [null, null, null],
+        [null, null, null],
+      ],
+      size: 3,
+      winner: null,
+      winningCells: [],
+      xIsNext: true,
+    };
+    expect(newState).toEqual(expectdState);
+  });
 
-    // Check that the state is reset to the initial state
-    expect(newState).toEqual({
-      squares: Array(9).fill(null),
+  it("should handle SET_SQUARE action", () => {
+    const initialState = {
+      board: Array(3)
+        .fill(null)
+        .map(() => Array(3).fill(null)),
       xIsNext: true,
       winner: null,
-      connectingLine: null,
-    });
+      size: 3,
+      winningCells: [],
+    };
+
+    const action = {
+      type: SET_SQUARE,
+      payload: "4",
+    };
+
+    const newState = gameReducer(initialState, action);
+    const expectdState = {
+      board: [
+        [null, null, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+        [null, null, null, null],
+      ],
+      size: 4,
+      winner: null,
+      winningCells: [],
+      xIsNext: true,
+    };
+    expect(newState).toEqual(expectdState);
+  });
+
+  it("should handle second click on same button", () => {
+    const initialState = {
+      board: [
+        ["X", "O", null],
+        [null, null, null],
+        [null, null, null],
+      ],
+      xIsNext: true,
+      winner: null,
+      size: 3,
+      winningCells: [],
+    };
+
+    const action = {
+      type: CLICK_SQUARE,
+      payload: {
+        rowIndex: 0,
+        colIndex: 0,
+      },
+    };
+
+    const newState = gameReducer(initialState, action);
+
+    expect(newState).toEqual(newState);
+  });
+
+  it("should send winner cells", () => {
+    const initialState = {
+      board: [
+        ["X", "O", "X"],
+        ["O", "X", "O"],
+        [null, null, null],
+      ],
+      xIsNext: true,
+      winner: null,
+      size: 3,
+      winningCells: [],
+    };
+
+    const action = {
+      type: CLICK_SQUARE,
+      payload: {
+        rowIndex: 2,
+        colIndex: 0,
+      },
+    };
+
+    const newState = gameReducer(initialState, action);
+
+    const expectdState = {
+      board: [
+        ["X", "O", "X"],
+        ["O", "X", "O"],
+        ["X", null, null],
+      ],
+      xIsNext: true,
+      winner: "X",
+      size: 3,
+      winningCells: [
+        { col: 2, row: 0 },
+        { col: 1, row: 1 },
+        { col: 0, row: 2 },
+      ],
+    };
+
+    expect(newState).toEqual(expectdState);
   });
 });
