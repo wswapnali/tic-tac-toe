@@ -17,8 +17,17 @@ const Input = () => {
   return (
     <>
       Select number of Rows :
-      <input className={classes.inputField} ref={userInput} type="number" />
-      <button className={classes.button} onClick={submitHandler}>
+      <input
+        className={classes.inputField}
+        ref={userInput}
+        type="number"
+        data-testid="inputField"
+      />
+      <button
+        className={classes.button}
+        onClick={submitHandler}
+        data-testid="submitButton"
+      >
         Submit
       </button>
       {error && <p className={classes.errorMessage}>Rows must be atleast 2</p>}

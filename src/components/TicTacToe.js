@@ -44,7 +44,7 @@ const TicTacToe = () => {
                     onClick={() =>
                       dispatch(clickSquare({ rowIndex, colIndex }))
                     }
-                    data-testid={"box" + colIndex}
+                    data-testid={"box" + rowIndex + colIndex}
                   >
                     {cell}
                   </button>
